@@ -104,7 +104,5 @@ Events:
   Normal   RenewalScheduled       0s    cert-manager-controller  Certificate scheduled for renewal in 1438 hours
 ```
 
-Navigate to the public IP address of your cluster and you will see 
-
 
 
