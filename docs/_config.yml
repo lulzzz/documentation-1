@@ -6,7 +6,7 @@ highlighter:      rouge
 title:            Microservices with AKS
 tagline:          'V1'
 description:      'Create microservices with Azure Kubernetes Service'
-url:              https://rcl-microservices-aks.github.io/documentation/
+url:              https://microservices.rclapp.com
 baseurl:          # the optional subpath of your site, e.g. "/blog"
                   # NB: This applies to all pages in your Jekyll site.
                   # If you want to move just the blog index pages but keep
@@ -14,8 +14,8 @@ baseurl:          # the optional subpath of your site, e.g. "/blog"
                   # sidebar_blog_link below.
 
 author:
-  name:           'Anil Ripla'
-  url:            https://rcl-microservices-aks.github.io/documentation/
+  name:           'RCL (Anil Ripla)'
+  url:            https://microservices.rclapp.com
 
 # Custom vars
 version:            3
@@ -29,3 +29,5 @@ github:
 
 disqus:
   shortname: rcl-micro-service
+
+google_analytics: 'UA-101288551-5'
