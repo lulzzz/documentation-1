@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  <title>
+    
+      02 Install Helm on Windows &middot; Microservices with AKS
+    
+  </title>
+
+  
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" />
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png" />
+<link rel="shortcut icon" href="/favicon.ico" />
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml" />
+
+  <!-- Additional head bits without overriding original head -->
+</head>
+
+
+  <body class="category">
+
+    <div id="sidebar">
+  <header>
+    <div>
+      <a href="/">
+        
+          <span class="back-arrow icon"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 0h24v24H0z" fill="none"/>
+  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+</svg></span>
+        
+        Microservices with AKS
+      </a>
+    </div>
+    <p class="lead">Create microservices with Azure Kubernetes Service</p>
+  </header>
+  <nav id="sidebar-nav-links">
+  
+    <a class="home-link "
+        href="/">Home</a>
+  
+  
+
+  
+
+  
+
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+      <a class="page-link "
+          href="/about.html">About</a>
+    
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+
+
+  
+
+
+  
+    
+      <a class="category-link "
+          href="/category/01_install_aks.html">01 Install Azure Kubernetes Service</a>
+    
+  
+
+  
+    
+      <a class="category-link  active"
+          href="/category/02_install_helm.html">02 Install Helm on Windows</a>
+    
+  
+
+  
+    
+      <a class="category-link "
+          href="/category/03_install_ingress.html">03 Install an Ingress Controller</a>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+  <!-- Optional additional links to insert in sidebar nav -->
+</nav>
+
+
+  <hr>
+  <p>
+  &copy; 2018.
+  <a href="/LICENSE.md">MIT License.</a>
+</p>
+
+</div>
+
+    <main class="container">
+      <header>
+  <h1 class="page-title">02 Install Helm on Windows</h1>
+</header>
+<div class="content">
+  
+  <h2 id="helm">Helm</h2>
+
+<p>Helm is an open-source packaging tool that helps you install and manage the lifecycle of Kubernetes applications</p>
+
+<h2 id="install-chocolatey">Install Chocolatey</h2>
+
+<p>You can install Helm on Windows using Chocolatey. You can download and install Chocolatey from the following page:</p>
+
+<p><a href="https://chocolatey.org/install">Install Chocately</a></p>
+
+<p>You can :</p>
+<ul>
+  <li>Install with cmd.exe</li>
+  <li>Install with PowerShell.exe</li>
+</ul>
+
+<h2 id="install-helm-with-chocolatey">Install Helm with Chocolatey</h2>
+
+<p>Run the following command to install Helm</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>choco <span class="nb">install </span>kubernetes-helm
+</code></pre></div></div>
+
+<h2 id="install-tiller">Install Tiller</h2>
+
+<p>Tiller, the server portion of Helm, typically runs inside of your Kubernetes cluster. But for development, it can also be run locally, and configured to talk to a remote Kubernetes cluster.</p>
+
+<h3 id="in-cluster-installation">In-Cluster Installation</h3>
+
+<p>Tiller requires security priveleges to run properly in an AKS cluster. You must create a ‘cluster-admin’ role to run Tiller under. Create a file called ‘cluster-admin.yaml’ and add the following code :</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">rbac.authorization.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterRole</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="no">null</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">cluster-admin</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="s">rbac.authorization.kubernetes.io/autoupdate</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+<span class="na">rules</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">apiGroups</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s1">'</span><span class="s">*'</span>
+  <span class="na">resources</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s1">'</span><span class="s">*'</span>
+  <span class="na">verbs</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s1">'</span><span class="s">*'</span>
+<span class="pi">-</span> <span class="na">nonResourceURLs</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s1">'</span><span class="s">*'</span>
+  <span class="na">verbs</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s1">'</span><span class="s">*'</span>
+</code></pre></div></div>
+
+<p>CD into the folder where you created the file and run the following command to create the ‘cluster’ admin role.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> cluster-admin.yaml
+</code></pre></div></div>
+
+<p>Create a service account for tiller</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create serviceaccount tiller <span class="nt">--namespace</span> kube-system
+</code></pre></div></div>
+
+<p>Create a file called ‘rbac-config.yaml’ and add the following code to configure Tiller</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ServiceAccount</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">tiller</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">rbac.authorization.k8s.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterRoleBinding</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">tiller</span>
+<span class="na">roleRef</span><span class="pi">:</span>
+  <span class="na">apiGroup</span><span class="pi">:</span> <span class="s">rbac.authorization.k8s.io</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterRole</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">cluster-admin</span>
+<span class="na">subjects</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">kind</span><span class="pi">:</span> <span class="s">ServiceAccount</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">tiller</span>
+    <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+</code></pre></div></div>
+
+<p>Bind tiller to the ‘cluster-admin’ role and service account by running the following command. You will need to CD into the folder that you saved the ‘rbac-config.yaml’ file to run this command.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> rbac-config.yaml
+</code></pre></div></div>
+
+<p>Install Tiller with the service account</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm init <span class="nt">--service-account</span> tiller
+</code></pre></div></div>
+
+<p>Tiller should now be installed in the cluster.</p>
+
+
+
+
+<ul class="posts-list">
+  
+  
+</ul>
+
+</div>
+
+    </main>
+
+    <!-- Optional footer content -->
+
+  </body>
+</html>
