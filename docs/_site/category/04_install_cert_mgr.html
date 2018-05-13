@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  <title>
+    
+      03 Install an Ingress Controller &middot; Microservices with AKS
+    
+  </title>
+
+  
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" />
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png" />
+<link rel="shortcut icon" href="/favicon.ico" />
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml" />
+
+  <!-- Additional head bits without overriding original head -->
+</head>
+
+
+  <body class="category">
+
+    <div id="sidebar">
+  <header>
+    <div>
+      <a href="/">
+        
+          <span class="back-arrow icon"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 0h24v24H0z" fill="none"/>
+  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+</svg></span>
+        
+        Microservices with AKS
+      </a>
+    </div>
+    <p class="lead">Create microservices with Azure Kubernetes Service</p>
+  </header>
+  <nav id="sidebar-nav-links">
+  
+    <a class="home-link "
+        href="/">Home</a>
+  
+  
+
+  
+
+  
+
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+      <a class="page-link "
+          href="/about.html">About</a>
+    
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+
+
+  
+
+
+  
+    
+      <a class="category-link "
+          href="/category/01_install_aks.html">01 Install Azure Kubernetes Service</a>
+    
+  
+
+  
+    
+      <a class="category-link "
+          href="/category/02_install_helm.html">02 Install Helm on Windows</a>
+    
+  
+
+  
+    
+      <a class="category-link "
+          href="/category/03_install_ingress.html">03 Install an Ingress Controller</a>
+    
+  
+
+  
+    
+      <a class="category-link  active"
+          href="/category/04_install_cert_mgr.html">03 Install an Ingress Controller</a>
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+  <!-- Optional additional links to insert in sidebar nav -->
+</nav>
+
+
+  <hr>
+  <p>
+  &copy; 2018.
+  <a href="/LICENSE.md">MIT License.</a>
+</p>
+
+</div>
+
+    <main class="container">
+      <header>
+  <h1 class="page-title">03 Install an Ingress Controller</h1>
+</header>
+<div class="content">
+  
+  <p>We will use the ‘cert-manager’ application to provide HHTPS certificates to our web facing services. cert-manager is used to automatically generate and configure Let’s Encrypt TLS certificates.</p>
+
+<h2 id="configure-dns-name">Configure DNS name</h2>
+
+<p>Because HTTPS certificates are used, you need to configure an FQDN name for the ingress controllers IP address. In the AKS resource group open the Public IP address.</p>
+
+<p><img src="https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/ingress/ingress-1.PNG" alt="placeholder" title="Image" /></p>
+
+<p>Add a DNS name</p>
+
+<p><img src="https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/cert/cert-1.PNG" alt="placeholder" title="Image" /></p>
+
+<h2 id="install-cert-manager">Install cert-manager</h2>
+
+<p>Use the following command to install cert-manager with RBAC disabled</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm <span class="nb">install</span> <span class="nt">--name</span> cert-mgr stable/cert-manager <span class="nt">--set</span> rbac.create<span class="o">=</span><span class="nb">false</span>
+</code></pre></div></div>
+
+<h3 id="set-a-clusterissuer">Set a ClusterIssuer</h3>
+
+<p>ClusterIssuers represent a certificate authority from which signed x509 certificates can be obtained. You will need at least one ClusterIssuer in order to begin issuing certificates within your cluster. We will use Let’s Encrypt as our Cluster Issuer. Cluster Issuers do not belong to a single namespace and can be referenced by Certificate resources from multiple different namespaces.</p>
+
+<p>Create a file called ‘cluster-issuer.yaml’ and add the following code. Replace the «place holder text» with your email address.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">certmanager.k8s.io/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterIssuer</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">letsencrypt-prod</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">acme</span><span class="pi">:</span>
+    <span class="na">server</span><span class="pi">:</span> <span class="s">https://acme-v01.api.letsencrypt.org/directory</span>
+    <span class="na">email</span><span class="pi">:</span> <span class="s">&lt;&lt;your-email-address&gt;&gt;</span>
+    <span class="na">privateKeySecretRef</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">letsencrypt-private-key</span>
+    <span class="na">http01</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+
+<p>To add the ClusterIssuer to the cluster, CD into the folder that you saved the file and run the following command</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> cluster-issuer.yaml
+</code></pre></div></div>
+
+<h2 id="create-certificates">Create Certificates</h2>
+
+<p>cert-manager has the concept of ‘Certificates’ that define a desired X.509 certificate. A Certificate is a namespaced resource that references a ClusterIssuer for information on how to obtain the certificate.</p>
+
+<p>Create a file called ‘certificate.yaml’ and add the following code. Replace the «place holder text» with your DNS name that we set earlier in this article.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">certmanager.k8s.io/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Certificate</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">acme-crt</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">secretName</span><span class="pi">:</span> <span class="s">acme-crt-secret</span>
+  <span class="na">issuerRef</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">letsencrypt-prod</span>
+    <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterIssuer</span>
+  <span class="na">dnsNames</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">&lt;&lt;your-dns-name&gt;&gt;</span>
+  <span class="na">acme</span><span class="pi">:</span>
+   <span class="na">config</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">http01</span><span class="pi">:</span>
+        <span class="na">ingressClass</span><span class="pi">:</span> <span class="s">nginx</span>
+      <span class="na">domains</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">&lt;&lt;your-dns-name&gt;&gt;</span>
+</code></pre></div></div>
+
+<p>To create the certificate, CD into the folder where you saved the file and run the following command</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> certificate.yaml
+</code></pre></div></div>
+
+<p>To get the details of the certificate, run the following command</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe certificate acme-crt
+</code></pre></div></div>
+
+<p>In the ‘Events’ section you should see</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Events:
+  Type     Reason                 Age   From                     Message
+  <span class="nt">----</span>     <span class="nt">------</span>                 <span class="nt">----</span>  <span class="nt">----</span>                     <span class="nt">-------</span>
+  Warning  ErrorCheckCertificate  1m    cert-manager-controller  Error checking existing TLS certificate: secret <span class="s2">"acme-crt-secret"</span> not found
+  Normal   PrepareCertificate     1m    cert-manager-controller  Preparing certificate with issuer
+  Normal   PresentChallenge       1m    cert-manager-controller  Presenting http-01 challenge <span class="k">for </span>domain rclappdev.eastus.cloudapp.azure.com
+  Normal   SelfCheck              1m    cert-manager-controller  Performing self-check <span class="k">for </span>domain rclappdev.eastus.cloudapp.azure.com
+  Normal   ObtainAuthorization    1s    cert-manager-controller  Obtained authorization <span class="k">for </span>domain rclappdev.eastus.cloudapp.azure.com
+  Normal   IssueCertificate       1s    cert-manager-controller  Issuing certificate...
+  Normal   CeritifcateIssued      0s    cert-manager-controller  Certificated issued successfully
+  Normal   RenewalScheduled       0s    cert-manager-controller  Certificate scheduled <span class="k">for </span>renewal <span class="k">in </span>1438 hours
+</code></pre></div></div>
+
+<p>Navigate to the public IP address of your cluster and you will see</p>
+
+
+
+
+<ul class="posts-list">
+  
+  
+</ul>
+
+</div>
+
+    </main>
+
+    <!-- Optional footer content -->
+
+  </body>
+</html>
