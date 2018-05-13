@@ -1,6 +1,6 @@
 ---
 layout: category
-title: 03 Install an Ingress Controller
+title: 04 Install HTTPS Certificates
 ---
 
 We will use the 'cert-manager' application to provide HHTPS certificates to our web facing services. cert-manager is used to automatically generate and configure Let's Encrypt TLS certificates.
