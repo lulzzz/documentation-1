@@ -106,6 +106,11 @@ Events:
 
 Ensure the certificate was issued successfully and the certificate is scheduled for automatic renewal within a 3 month period.
 
+Navigate to the DNS name using https, you should now see a secured HTTPS connection
+
+![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/cert/cert-2.PNG "Image")
+
+
 ### Next Steps
 
 The other article in this website will walk you through installing Identity Service as a Security Gateway.
