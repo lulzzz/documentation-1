@@ -64,9 +64,25 @@ The Ingress Controller is also responsible for the TLS termination of all reques
 
 #### Single Sign On
 
+Identity Service provides Single-Sign-On (SSO) for the frontend website. When the user clicks the 'Login; link in the website, they are signed in using a login web page provided by Identity Service. Apart from the user authentication, Identity Service will provide the frontend website with a set of authentication claims that are assigned to the user. These authentication claims can be used to gain access to various operations on the website, for example, access to a membership or admin page.
+
 ![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/sso.PNG "Image")
 
 #### Authorized API Access
+
+Identity Service also provides security access to the Web APIs. The steps for securing an API are as follows:
+
+* Request a Token - The frontend website requests a JWT access token from Identity Service to make a secured request to an API
+* Provide a Token - Identity service will send the access token to the frontend website once it provides the right client id and secret to access the token
+* Make and authenticated request - The frontend website will place the bearer token in the header and make a secured request to the API
+* Return JSON Payload - Once the request is authorized by the API, the API will return the JSON payload to the frontend website
+
+
+![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/api-auth.PNG "Image")
+
+### Communication Between API Services
+
+API's can communicate with each other using http or messaging. The demo application uses Azure Sevice Bus messaging services for communication.
 
 ![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/api-auth.PNG "Image")
 
