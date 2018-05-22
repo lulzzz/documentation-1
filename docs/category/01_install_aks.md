@@ -1,9 +1,11 @@
 ---
 layout: category
-title: 01 Install Azure Kubernetes Service
+title: 01 Create Azure Kubernetes Service
 ---
 
 ## Create AKS cluster
+
+In this section we will create a simple one node AKS cluster using a B2S size VM for our node.
 
 Choose Create a resource > search for Kubernetes > select Kubernetes Service  > Create.
 
@@ -31,7 +33,7 @@ The following images shows a sample configuration for the installation that will
 
 ### Install Azure CLI on Windows
 
-On Windows, the Azure CLI binary is installed via an MSI, which gives you access to the CLI through the Windows Command Prompt (CMD) or PowerShell.
+We will use the Azure CLI to manage our AKS Cluster. On Windows, the Azure CLI binary is installed via a MSI, which gives you access to the CLI through the Windows Command Prompt (CMD) or PowerShell.
 
 You can download and install the CLI on the following page:
 
@@ -45,7 +47,7 @@ az login
 
 ### Install the kubectl CLI
 
-To install it locally, run the following command:
+Kubectl is used to manage kubernetes. To install it locally, run the following command:
 
 ```bash
 az aks install-cli
@@ -71,6 +73,13 @@ Output:
 NAME                       STATUS    ROLES     AGE       VERSION
 aks-agentpool-35064155-0   Ready     agent     17m       v1.9.6
 ```
+
+### Next Steps
+
+The other article in this website will walk you through installing the Helm package manager in our AKS cluster.
+
+Next Article : [Installing Helm On Windows](/category/02_install_helm) 
+
 
 
 

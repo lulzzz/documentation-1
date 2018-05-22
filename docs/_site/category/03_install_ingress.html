@@ -118,14 +118,14 @@
   
     
       <a class="category-link "
-          href="/category/01_install_aks.html">01 Install Azure Kubernetes Service</a>
+          href="/category/01_install_aks.html">01 Create Azure Kubernetes Service</a>
     
   
 
   
     
       <a class="category-link "
-          href="/category/02_install_helm.html">02 Install Helm on Windows</a>
+          href="/category/02_install_helm.html">02 Installing Helm on Windows</a>
     
   
 
@@ -271,7 +271,7 @@
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm <span class="nb">install</span> <span class="nt">--name</span> nginx-ing stable/nginx-ingress <span class="nt">--set</span> rbac.create<span class="o">=</span><span class="nb">false</span> <span class="nt">--namespace</span> kube-system
 </code></pre></div></div>
 
-<p>NGINX ingress controller should now be installed in your cluster. Azure AKS automatically adds a load balancer called Kubernetes and a public IP.</p>
+<p>NGINX ingress controller should now be installed in your cluster. Azure AKS automatically adds a load balancer called Kubernetes and a public IP to the resource group.</p>
 
 <p><img src="https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/ingress/ingress-1.PNG" alt="placeholder" title="Image" /></p>
 
@@ -291,13 +291,13 @@ nginx-ing-nginx-ingress-default-backend   ClusterIP      10.0.42.127    &lt;none
 tiller-deploy                             ClusterIP      10.0.115.145   &lt;none&gt;         44134/TCP                    56m
 </code></pre></div></div>
 
-<p>You will see the nginx controller that can be accessed from the internet (type: LoadBalancer) with an external IP assigned. You will also see the an nginx default backend that runs inside the cluster an cannot be accessed form the internet (type: ClusterIP). The Load Balancer will route traffick to the default backend. If you navigate to the external IP you will see the nginx default backend in the browser.</p>
+<p>You will see the nginx controller that can be accessed from the external internet (type: LoadBalancer) with an external IP assigned. You will also see the an nginx default backend that runs inside the cluster an cannot be accessed from the internet (type: ClusterIP). The Load Balancer will route traffick to the default backend when a frontend website is not present. If you navigate to the external IP address (in this instance, 23.100.26.95) you will see the nginx default backend in the browser.</p>
 
 <p><img src="https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/ingress/ingress-2.PNG" alt="placeholder" title="Image" /></p>
 
 <h2 id="increasing-the-nginx-proxy-buffer-size">Increasing the NGINX Proxy Buffer Size</h2>
 
-<p>The NGINX ingress controller Proxy Buffer Size is not large enough for the headers returned from some services. You will need to increase the buffer size. Create a ConfigMap file called ‘nginx-configuration.yaml’ add this code. Replace the placeholder text with your nginx pod name.</p>
+<p>The NGINX ingress controller Proxy Buffer Size is not large enough for the headers returned from some services. You will need to increase the buffer size. Create a ConfigMap file called ‘nginx-configuration.yaml’ and add this code. Replace the placeholder text with your nginx pod name.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kind: ConfigMap  
 apiVersion: v1  
@@ -328,12 +328,20 @@ tiller-deploy-5dd4f7b964-qz4rk                             1/1       Running   0
 tunnelfront-df6544c87-c6vv9                                1/1       Running   0          2h
 </code></pre></div></div>
 
+<p>The pod name in this instance is ‘nginx-ing-nginx-ingress-controller-56b8ff549-6lshm’.</p>
+
 <p>CD into the folder where you saved the ConfigMap and run the following command:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> nginx-configuration.yaml 
 </code></pre></div></div>
 
 <p>The nginx ingress controller will be updated and restarted with the new configuration value for the proxy buffer size.</p>
+
+<h3 id="next-steps">Next Steps</h3>
+
+<p>The other article in this website will walk you through installing HTTPS certificates with cert-manager.</p>
+
+<p>Next Article : <a href="/category/04_install_cert_mgr">Install HTTPS Certificates</a></p>
 
 
 

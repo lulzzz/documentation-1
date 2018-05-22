@@ -19,7 +19,7 @@ Install the nginx ingress controller with RBAC disabled
 helm install --name nginx-ing stable/nginx-ingress --set rbac.create=false --namespace kube-system
 ```
 
-NGINX ingress controller should now be installed in your cluster. Azure AKS automatically adds a load balancer called Kubernetes and a public IP.
+NGINX ingress controller should now be installed in your cluster. Azure AKS automatically adds a load balancer called Kubernetes and a public IP to the resource group.
 
 ![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/ingress/ingress-1.PNG "Image")
 
@@ -41,13 +41,13 @@ nginx-ing-nginx-ingress-default-backend   ClusterIP      10.0.42.127    <none>  
 tiller-deploy                             ClusterIP      10.0.115.145   <none>         44134/TCP                    56m
 ```
 
-You will see the nginx controller that can be accessed from the internet (type: LoadBalancer) with an external IP assigned. You will also see the an nginx default backend that runs inside the cluster an cannot be accessed form the internet (type: ClusterIP). The Load Balancer will route traffick to the default backend. If you navigate to the external IP you will see the nginx default backend in the browser.
+You will see the nginx controller that can be accessed from the external internet (type: LoadBalancer) with an external IP assigned. You will also see the an nginx default backend that runs inside the cluster an cannot be accessed from the internet (type: ClusterIP). The Load Balancer will route traffick to the default backend when a frontend website is not present. If you navigate to the external IP address (in this instance, 23.100.26.95) you will see the nginx default backend in the browser.
 
 ![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/ingress/ingress-2.PNG "Image")
 
 ## Increasing the NGINX Proxy Buffer Size
 
-The NGINX ingress controller Proxy Buffer Size is not large enough for the headers returned from some services. You will need to increase the buffer size. Create a ConfigMap file called 'nginx-configuration.yaml' add this code. Replace the placeholder text with your nginx pod name.
+The NGINX ingress controller Proxy Buffer Size is not large enough for the headers returned from some services. You will need to increase the buffer size. Create a ConfigMap file called 'nginx-configuration.yaml' and add this code. Replace the placeholder text with your nginx pod name.
 
 ```bash
 kind: ConfigMap  
@@ -81,6 +81,8 @@ tiller-deploy-5dd4f7b964-qz4rk                             1/1       Running   0
 tunnelfront-df6544c87-c6vv9                                1/1       Running   0          2h
 ```
 
+The pod name in this instance is 'nginx-ing-nginx-ingress-controller-56b8ff549-6lshm'.
+
 CD into the folder where you saved the ConfigMap and run the following command:
 
 ```bash
@@ -88,6 +90,12 @@ kubectl apply -f nginx-configuration.yaml
 ```
 
 The nginx ingress controller will be updated and restarted with the new configuration value for the proxy buffer size.
+
+### Next Steps
+
+The other article in this website will walk you through installing HTTPS certificates with cert-manager.
+
+Next Article : [Install HTTPS Certificates](/category/04_install_cert_mgr) 
 
 
 

@@ -1,6 +1,6 @@
 ---
 layout: category
-title: 06 API Services
+title: 06 Installing Web API Services
 ---
 
 ## TODO

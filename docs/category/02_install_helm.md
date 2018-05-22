@@ -1,6 +1,6 @@
 ---
 layout: category
-title: 02 Install Helm on Windows
+title: 02 Installing Helm on Windows
 ---
 
 ## Helm
@@ -31,7 +31,7 @@ Tiller, the server portion of Helm, typically runs inside of your Kubernetes clu
 
 ### In-Cluster Installation
 
-Tiller requires security priveleges to run properly in an AKS cluster. You must create a 'cluster-admin' role to run Tiller under. Create a file called 'cluster-admin.yaml' and add the following code :
+Tiller requires security priveleges to run properly in an AKS cluster. AKS does not have the 'cluster-admin' role installed by default. You must create a 'cluster-admin' role manually to run Tiller. Create a file called 'cluster-admin.yaml' and add the following code :
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -54,7 +54,7 @@ rules:
   - '*'
 ```
 
-CD into the folder where you created the file and run the following command to create the 'cluster' admin role.
+CD into the folder where you created the file and run the following command to create the 'cluster-admin' role.
 
 ```bash
 kubectl create -f cluster-admin.yaml
@@ -66,7 +66,7 @@ Create a service account for tiller
 kubectl create serviceaccount tiller --namespace kube-system
 ```
 
-Create a file called 'rbac-config.yaml' and add the following code to configure Tiller
+Create a file called 'rbac-config.yaml' and add the following code to add Tiller to the service account and bind it to the 'cluster-admin' role
 
 ```yaml
 apiVersion: v1
@@ -102,5 +102,11 @@ helm init --service-account tiller
 ```
 
 Tiller should now be installed in the cluster.
+
+### Next Steps
+
+The other article in this website will walk you through using Helm to install the Ingress Controller in our AKS cluster.
+
+Next Article : [Install an Ingress Controller](/category/03_install_ingress) 
 
 

@@ -11,7 +11,7 @@
 
   <title>
     
-      02 Install Helm on Windows &middot; Microservices
+      02 Installing Helm on Windows &middot; Microservices
     
   </title>
 
@@ -118,14 +118,14 @@
   
     
       <a class="category-link "
-          href="/category/01_install_aks.html">01 Install Azure Kubernetes Service</a>
+          href="/category/01_install_aks.html">01 Create Azure Kubernetes Service</a>
     
   
 
   
     
       <a class="category-link  active"
-          href="/category/02_install_helm.html">02 Install Helm on Windows</a>
+          href="/category/02_install_helm.html">02 Installing Helm on Windows</a>
     
   
 
@@ -253,7 +253,7 @@
 
     <main class="container">
       <header>
-  <h1 class="page-title">02 Install Helm on Windows</h1>
+  <h1 class="page-title">02 Installing Helm on Windows</h1>
 </header>
 <div class="content">
   
@@ -286,7 +286,7 @@
 
 <h3 id="in-cluster-installation">In-Cluster Installation</h3>
 
-<p>Tiller requires security priveleges to run properly in an AKS cluster. You must create a ‘cluster-admin’ role to run Tiller under. Create a file called ‘cluster-admin.yaml’ and add the following code :</p>
+<p>Tiller requires security priveleges to run properly in an AKS cluster. AKS does not have the ‘cluster-admin’ role installed by default. You must create a ‘cluster-admin’ role manually to run Tiller. Create a file called ‘cluster-admin.yaml’ and add the following code :</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">rbac.authorization.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterRole</span>
@@ -308,7 +308,7 @@
   <span class="pi">-</span> <span class="s1">'</span><span class="s">*'</span>
 </code></pre></div></div>
 
-<p>CD into the folder where you created the file and run the following command to create the ‘cluster’ admin role.</p>
+<p>CD into the folder where you created the file and run the following command to create the ‘cluster-admin’ role.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> cluster-admin.yaml
 </code></pre></div></div>
@@ -318,7 +318,7 @@
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create serviceaccount tiller <span class="nt">--namespace</span> kube-system
 </code></pre></div></div>
 
-<p>Create a file called ‘rbac-config.yaml’ and add the following code to configure Tiller</p>
+<p>Create a file called ‘rbac-config.yaml’ and add the following code to add Tiller to the service account and bind it to the ‘cluster-admin’ role</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ServiceAccount</span>
@@ -351,6 +351,12 @@
 </code></pre></div></div>
 
 <p>Tiller should now be installed in the cluster.</p>
+
+<h3 id="next-steps">Next Steps</h3>
+
+<p>The other article in this website will walk you through using Helm to install the Ingress Controller in our AKS cluster.</p>
+
+<p>Next Article : <a href="/category/03_install_ingress">Install an Ingress Controller</a></p>
 
 
 

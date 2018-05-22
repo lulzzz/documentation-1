@@ -111,5 +111,11 @@ Navigate to the site at https://<<your-dns-name>>/identitysvc
 
 ![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/identity/identity-1.PNG "Image")
 
+### Next Steps
+
+The other article in this website will walk you through installing Web API services in the AKS cluster.
+
+Next Article : [Installing Web API Services](/category/06_api_services) 
+
 
 

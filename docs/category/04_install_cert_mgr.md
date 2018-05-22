@@ -3,7 +3,7 @@ layout: category
 title: 04 Install HTTPS Certificates
 ---
 
-We will use the 'cert-manager' application to provide HHTPS certificates to our web facing services. cert-manager is used to automatically generate and configure Let's Encrypt TLS certificates.
+We will use the 'cert-manager' application to provide HHTPS certificates to our web facing services. cert-manager is used to automatically generate and configure 'Let's Encrypt' TLS certificates.
 
 ## Configure DNS name
 
@@ -12,7 +12,7 @@ Because HTTPS certificates are used, you need to configure an FQDN name for the 
 
 ![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/ingress/ingress-1.PNG "Image")
 
-Add a DNS name
+Add a DNS name, in this instance we used 'rclappdev', but you must use your own unique name.
 
 ![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/cert/cert-1.PNG "Image")
 
@@ -26,7 +26,7 @@ helm install --name cert-mgr stable/cert-manager --set rbac.create=false
 
 ### Set a ClusterIssuer
 
-ClusterIssuers represent a certificate authority from which signed x509 certificates can be obtained. You will need at least one ClusterIssuer in order to begin issuing certificates within your cluster. We will use Let's Encrypt as our Cluster Issuer. Cluster Issuers do not belong to a single namespace and can be referenced by Certificate resources from multiple different namespaces.
+ClusterIssuers represent a certificate authority from which signed x509 certificates can be obtained. You will need at least one ClusterIssuer in order to begin issuing certificates within your cluster. We will use 'Let's Encrypt' as our Cluster Issuer. Cluster Issuers do not belong to a single namespace and can be referenced by Certificate resources from multiple different namespaces.
 
 Create a file called 'cluster-issuer.yaml' and add the following code. Replace the <<place holder text>> with your email address.
 
@@ -52,7 +52,7 @@ kubectl create -f cluster-issuer.yaml
 
 ## Create Certificates
 
-cert-manager has the concept of ‘Certificates’ that define a desired X.509 certificate. A Certificate is a namespaced resource that references a ClusterIssuer for information on how to obtain the certificate.
+cert-manager has the concept of ‘Certificates’ that define a desired X.509 certificate. A Certificate is a resource that references a ClusterIssuer for information on how to obtain the certificate.
 
 Create a file called 'certificate.yaml' and add the following code. Replace the <<place holder text>> with your DNS name that we set earlier in this article.
 
@@ -104,5 +104,11 @@ Events:
   Normal   RenewalScheduled       0s    cert-manager-controller  Certificate scheduled for renewal in 1438 hours
 ```
 
+Ensure the certificate was issued successfully and the certificate is scheduled for automatic renewal within a 3 month period.
 
+### Next Steps
+
+The other article in this website will walk you through installing Identity Service as a Security Gateway.
+
+Next Article : [Install Security Gateway](/category/05_install_security_gateway) 
 
