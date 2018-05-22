@@ -1,5 +1,5 @@
 source "https://rubygems.org"
 gemspec
 # Added at 2018-05-01 03:28:29 -0400 by desktop-rcl\rcl:
-gem "jekyll", "~> 3.8"
+gem "jekyll", "~> 3.8.1"
 gem 'wdm', '>= 0.1.0'
