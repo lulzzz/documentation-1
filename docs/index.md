@@ -5,7 +5,7 @@ title: Home
 
 ## Introduction 
 
-In this series of articles, we will walk through a demonstration application that is built with Microservices from the ground up. You can follow along by installing the various applications to understand how they work together.
+In this series of articles, we will walk through a demonstration application that is built with Microservices from the ground up. This section will provide an overview of designing a Microservices application by describing how we created the demo application. Later on, you can try installing the various applications and exploring their features to understand how they work together.
 
 ### Azure Kubernetes Services (AKS)
 
@@ -97,4 +97,8 @@ This approach also makes our application extensible. Say we now have a Shipping 
 Messaging also adds reliability to the application. For instance, if the Product Service is down, the message will remain in the Topic queue until the Product Service is back up again to consume it.
 
 ![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/messaging.PNG "Image")
+
+### Next Steps
+
+The other articles in this website will walk you through installing the demo application and exploring the concepts we introduced above in greater detail.
 
