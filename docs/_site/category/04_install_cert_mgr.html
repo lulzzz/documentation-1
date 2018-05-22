@@ -153,7 +153,7 @@
   
     
       <a class="category-link "
-          href="/category/06_api_services.html">06 API Services</a>
+          href="/category/06_api_services.html">06 Installing Web API Services</a>
     
   
 
@@ -280,7 +280,7 @@
 
 <p>ClusterIssuers represent a certificate authority from which signed x509 certificates can be obtained. You will need at least one ClusterIssuer in order to begin issuing certificates within your cluster. We will use ‘Let’s Encrypt’ as our Cluster Issuer. Cluster Issuers do not belong to a single namespace and can be referenced by Certificate resources from multiple different namespaces.</p>
 
-<p>Create a file called ‘cluster-issuer.yaml’ and add the following code. Replace the «place holder text» with your email address.</p>
+<p>Create a file called ‘cluster-issuer.yaml’ and add the following code. Replace the [placeholder] text with your email address.</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">certmanager.k8s.io/v1alpha1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterIssuer</span>
@@ -289,7 +289,7 @@
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">acme</span><span class="pi">:</span>
     <span class="na">server</span><span class="pi">:</span> <span class="s">https://acme-v01.api.letsencrypt.org/directory</span>
-    <span class="na">email</span><span class="pi">:</span> <span class="s">&lt;&lt;your-email-address&gt;&gt;</span>
+    <span class="na">email</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">your-email-address</span><span class="pi">]</span>
     <span class="na">privateKeySecretRef</span><span class="pi">:</span>
       <span class="na">name</span><span class="pi">:</span> <span class="s">letsencrypt-private-key</span>
     <span class="na">http01</span><span class="pi">:</span> <span class="pi">{}</span>
@@ -304,7 +304,7 @@
 
 <p>cert-manager has the concept of ‘Certificates’ that define a desired X.509 certificate. A Certificate is a resource that references a ClusterIssuer for information on how to obtain the certificate.</p>
 
-<p>Create a file called ‘certificate.yaml’ and add the following code. Replace the «place holder text» with your DNS name that we set earlier in this article.</p>
+<p>Create a file called ‘certificate.yaml’ and add the following code. Replace the [placeholder] text with your DNS name that we set earlier in this article.</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">certmanager.k8s.io/v1alpha1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Certificate</span>
@@ -316,13 +316,13 @@
     <span class="na">name</span><span class="pi">:</span> <span class="s">letsencrypt-prod</span>
     <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterIssuer</span>
   <span class="na">dnsNames</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">&lt;&lt;your-dns-name&gt;&gt;</span>
+  <span class="pi">-</span> <span class="pi">[</span><span class="nv">your-dns-name</span><span class="pi">]</span>
   <span class="na">acme</span><span class="pi">:</span>
    <span class="na">config</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">http01</span><span class="pi">:</span>
         <span class="na">ingressClass</span><span class="pi">:</span> <span class="s">nginx</span>
       <span class="na">domains</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">&lt;&lt;your-dns-name&gt;&gt;</span>
+      <span class="pi">-</span> <span class="pi">[</span><span class="nv">your-dns-name</span><span class="pi">]</span>
 </code></pre></div></div>
 
 <p>To create the certificate, CD into the folder where you saved the file and run the following command</p>

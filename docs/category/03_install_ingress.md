@@ -47,13 +47,13 @@ You will see the nginx controller that can be accessed from the external interne
 
 ## Increasing the NGINX Proxy Buffer Size
 
-The NGINX ingress controller Proxy Buffer Size is not large enough for the headers returned from some services. You will need to increase the buffer size. Create a ConfigMap file called 'nginx-configuration.yaml' and add this code. Replace the placeholder text with your nginx pod name.
+The NGINX ingress controller Proxy Buffer Size is not large enough for the headers returned from some services. You will need to increase the buffer size. Create a ConfigMap file called 'nginx-configuration.yaml' and add this code. Replace the [placeholder] text with your nginx pod name.
 
 ```bash
 kind: ConfigMap  
 apiVersion: v1  
 metadata:  
-  name: <<your-nginx-pod-name>>
+  name: [your-nginx-pod-name]
   namespace: kube-system
 data:  
   proxy-buffer-size: "16k"
@@ -81,7 +81,11 @@ tiller-deploy-5dd4f7b964-qz4rk                             1/1       Running   0
 tunnelfront-df6544c87-c6vv9                                1/1       Running   0          2h
 ```
 
-The pod name in this instance is 'nginx-ing-nginx-ingress-controller-56b8ff549-6lshm'.
+The pod name in this instance is 
+
+```bash
+nginx-ing-nginx-ingress-controller-56b8ff549-6lshm
+```
 
 CD into the folder where you saved the ConfigMap and run the following command:
 

@@ -153,7 +153,7 @@
   
     
       <a class="category-link "
-          href="/category/06_api_services.html">06 API Services</a>
+          href="/category/06_api_services.html">06 Installing Web API Services</a>
     
   
 
@@ -297,16 +297,16 @@ tiller-deploy                             ClusterIP      10.0.115.145   &lt;none
 
 <h2 id="increasing-the-nginx-proxy-buffer-size">Increasing the NGINX Proxy Buffer Size</h2>
 
-<p>The NGINX ingress controller Proxy Buffer Size is not large enough for the headers returned from some services. You will need to increase the buffer size. Create a ConfigMap file called ‘nginx-configuration.yaml’ and add this code. Replace the placeholder text with your nginx pod name.</p>
+<p>The NGINX ingress controller Proxy Buffer Size is not large enough for the headers returned from some services. You will need to increase the buffer size. Create a ConfigMap file called ‘nginx-configuration.yaml’ and add this code. Replace the [placeholder] text with your nginx pod name.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kind: ConfigMap  
 apiVersion: v1  
 metadata:  
-  name: <span class="o">&lt;&lt;</span><span class="no">your</span><span class="sh">-nginx-pod-name&gt;&gt;
+  name: <span class="o">[</span>your-nginx-pod-name]
   namespace: kube-system
 data:  
-  proxy-buffer-size: "16k"
-</span></code></pre></div></div>
+  proxy-buffer-size: <span class="s2">"16k"</span>
+</code></pre></div></div>
 
 <p>You can get the pod name for nginx with the following command</p>
 
@@ -328,7 +328,10 @@ tiller-deploy-5dd4f7b964-qz4rk                             1/1       Running   0
 tunnelfront-df6544c87-c6vv9                                1/1       Running   0          2h
 </code></pre></div></div>
 
-<p>The pod name in this instance is ‘nginx-ing-nginx-ingress-controller-56b8ff549-6lshm’.</p>
+<p>The pod name in this instance is</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nginx-ing-nginx-ingress-controller-56b8ff549-6lshm
+</code></pre></div></div>
 
 <p>CD into the folder where you saved the ConfigMap and run the following command:</p>
 

@@ -28,7 +28,7 @@ helm install --name cert-mgr stable/cert-manager --set rbac.create=false
 
 ClusterIssuers represent a certificate authority from which signed x509 certificates can be obtained. You will need at least one ClusterIssuer in order to begin issuing certificates within your cluster. We will use 'Let's Encrypt' as our Cluster Issuer. Cluster Issuers do not belong to a single namespace and can be referenced by Certificate resources from multiple different namespaces.
 
-Create a file called 'cluster-issuer.yaml' and add the following code. Replace the <<place holder text>> with your email address.
+Create a file called 'cluster-issuer.yaml' and add the following code. Replace the [placeholder] text with your email address.
 
 ```yaml
 apiVersion: certmanager.k8s.io/v1alpha1
@@ -38,7 +38,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v01.api.letsencrypt.org/directory
-    email: <<your-email-address>>
+    email: [your-email-address]
     privateKeySecretRef:
       name: letsencrypt-private-key
     http01: {}
@@ -54,7 +54,7 @@ kubectl create -f cluster-issuer.yaml
 
 cert-manager has the concept of ‘Certificates’ that define a desired X.509 certificate. A Certificate is a resource that references a ClusterIssuer for information on how to obtain the certificate.
 
-Create a file called 'certificate.yaml' and add the following code. Replace the <<place holder text>> with your DNS name that we set earlier in this article.
+Create a file called 'certificate.yaml' and add the following code. Replace the [placeholder] text with your DNS name that we set earlier in this article.
 
 ```yaml
 apiVersion: certmanager.k8s.io/v1alpha1
@@ -67,13 +67,13 @@ spec:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-  - <<your-dns-name>>
+  - [your-dns-name]
   acme:
    config:
     - http01:
         ingressClass: nginx
       domains:
-      - <<your-dns-name>>
+      - [your-dns-name]
 ```
 
 To create the certificate, CD into the folder where you saved the file and run the following command

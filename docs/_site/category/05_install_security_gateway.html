@@ -153,7 +153,7 @@
   
     
       <a class="category-link "
-          href="/category/06_api_services.html">06 API Services</a>
+          href="/category/06_api_services.html">06 Installing Web API Services</a>
     
   
 
@@ -295,73 +295,15 @@
 
 <h2 id="install-identity-service">Install Identity Service</h2>
 
-<p>Create a file called ‘identityservice.yaml’ and add the following code. Replace the «place holder text» with the data you copied for the SQL Database and SendGrid Service earlier in this article. You will also need to include an Admin Email address.</p>
+<p>Run the following command to install Identity Service. Replace the [placeholder text with your data]</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">extensions/v1beta1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">identitysvc</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">template</span><span class="pi">:</span>
-    <span class="na">metadata</span><span class="pi">:</span>
-      <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span> <span class="s">identitysvc</span>
-    <span class="na">spec</span><span class="pi">:</span>
-      <span class="na">containers</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">rcladmin/identitysvc3:125</span>
-        <span class="na">name</span><span class="pi">:</span> <span class="s">identitysvc</span>
-        <span class="na">ports</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
-        <span class="na">env</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ASPNETCORE_ENVIRONMENT</span>
-          <span class="na">value</span><span class="pi">:</span> <span class="s">Production</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DatabaseConnection</span>
-          <span class="na">value</span><span class="pi">:</span> <span class="s">Server=tcp:&lt;&lt;your-sql-server-name&gt;&gt;,1433;Initial Catalog=&lt;&lt;your-db-name&gt;&gt;;Persist Security Info=False;User ID=&lt;&lt;your-sql-server-username&gt;&gt;;Password=&lt;&lt;your-sql-server-password&gt;&gt;;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;</span>       
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">SendGridAPIKey</span>
-          <span class="na">value</span><span class="pi">:</span> <span class="s">&lt;&lt;your-sendgrid-api-key&gt;&gt;</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">AdminUserName</span>
-          <span class="na">value</span><span class="pi">:</span> <span class="s">&lt;&lt;your-admin-email&gt;&gt;</span>
-<span class="nn">---</span>
-<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">identitysvc</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">ports</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">80</span>
-    <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
-    <span class="na">targetPort</span><span class="pi">:</span> <span class="s">80</span>
-  <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">identitysvc</span>
-  <span class="na">type</span><span class="pi">:</span> <span class="s">ClusterIP</span>        
-<span class="nn">---</span>
-<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">extensions/v1beta1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">identitysvc-ingress</span>
-  <span class="na">annotations</span><span class="pi">:</span>
-    <span class="s">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">tls</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">&lt;&lt;your-dns-name&gt;&gt;</span>
-    <span class="na">secretName</span><span class="pi">:</span> <span class="s">acme-crt-secret</span>
-  <span class="na">rules</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">&lt;&lt;your-dns-name&gt;&gt;</span>
-    <span class="na">http</span><span class="pi">:</span>
-      <span class="na">paths</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/identitysvc</span>
-        <span class="na">backend</span><span class="pi">:</span>
-          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">identitysvc</span>
-          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm <span class="nb">install </span>rcl-apps/identityservice <span class="nt">--set</span> <span class="nv">dbServerName</span><span class="o">=[</span>db-server-name] <span class="nt">--set</span> <span class="nv">dbName</span><span class="o">=[</span>dbname] <span class="nt">--set</span> <span class="nv">dbUserName</span><span class="o">=[</span>db-username] <span class="nt">--set</span> <span class="nv">dbPassword</span><span class="o">=[</span>db-password] <span class="nt">--set</span> <span class="nv">sendgridKey</span><span class="o">=[</span>sendgrid-api-key] <span class="nt">--set</span> <span class="nv">adminEmail</span><span class="o">=[</span>admin-email] <span class="nt">--set</span> <span class="nv">host</span><span class="o">=[</span>dns-name]
 </code></pre></div></div>
 
-<p>To install Identity Service, CD into the folder where you saved the file and run the following command</p>
+<p>An example of the command with sample values is as follows :</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create -f identityservice.yaml
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm <span class="nb">install </span>rcl-apps/identityservice <span class="nt">--set</span> <span class="nv">dbServerName</span><span class="o">=</span>contoso.database.windows.net <span class="nt">--set</span> <span class="nv">dbName</span><span class="o">=</span>contosodb <span class="nt">--set</span> <span class="nv">dbUserName</span><span class="o">=</span>contosoadmin <span class="nt">--set</span> <span class="nv">dbPassword</span><span class="o">=</span>dffrtwedsfd <span class="nt">--set</span> <span class="nv">sendgridKey</span><span class="o">=</span>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 <span class="nt">--set</span> <span class="nv">adminEmail</span><span class="o">=</span>contoso@mail.com <span class="nt">--set</span> <span class="nv">host</span><span class="o">=</span>contoso.eastus.cloudapp.azure.com
 </code></pre></div></div>
-
-<p>The ingress rules will allow the load balancer to route all requests with path /identitysvc to identity service. The site will also be run with HHTPS.</p>
 
 <p>Navigate to the site at https://«your-dns-name»/identitysvc</p>
 

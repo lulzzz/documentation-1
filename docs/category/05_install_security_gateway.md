@@ -37,75 +37,17 @@ Identity Service requires verification of emails when a user first registers. We
 
 ## Install Identity Service
 
-Create a file called 'identityservice.yaml' and add the following code. Replace the <<place holder text>> with the data you copied for the SQL Database and SendGrid Service earlier in this article. You will also need to include an Admin Email address.
+Run the following command to install Identity Service. Replace the [placeholder text with your data]
 
-```yaml
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: identitysvc
-spec:
-  template:
-    metadata:
-      labels:
-        app: identitysvc
-    spec:
-      containers:
-      - image: rcladmin/identitysvc3:125
-        name: identitysvc
-        ports:
-        - containerPort: 80
-        env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: Production
-        - name: DatabaseConnection
-          value: Server=tcp:<<your-sql-server-name>>,1433;Initial Catalog=<<your-db-name>>;Persist Security Info=False;User ID=<<your-sql-server-username>>;Password=<<your-sql-server-password>>;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;       
-        - name: SendGridAPIKey
-          value: <<your-sendgrid-api-key>>
-        - name: AdminUserName
-          value: <<your-admin-email>>
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: identitysvc
-spec:
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
-  selector:
-    app: identitysvc
-  type: ClusterIP        
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: identitysvc-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  tls:
-  - hosts:
-    - <<your-dns-name>>
-    secretName: acme-crt-secret
-  rules:
-  - host: <<your-dns-name>>
-    http:
-      paths:
-      - path: /identitysvc
-        backend:
-          serviceName: identitysvc
-          servicePort: 80
+```bash
+helm install rcl-apps/identityservice --set dbServerName=[db-server-name] --set dbName=[dbname] --set dbUserName=[db-username] --set dbPassword=[db-password] --set sendgridKey=[sendgrid-api-key] --set adminEmail=[admin-email] --set host=[dns-name]
 ```
 
-To install Identity Service, CD into the folder where you saved the file and run the following command
+An example of the command with sample values is as follows :
 
+```bash
+helm install rcl-apps/identityservice --set dbServerName=contoso.database.windows.net --set dbName=contosodb --set dbUserName=contosoadmin --set dbPassword=dffrtwedsfd --set sendgridKey=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 --set adminEmail=contoso@mail.com --set host=contoso.eastus.cloudapp.azure.com
 ```
-kubectl create -f identityservice.yaml
-```
-
-The ingress rules will allow the load balancer to route all requests with path /identitysvc to identity service. The site will also be run with HHTPS. 
 
 Navigate to the site at https://<<your-dns-name>>/identitysvc
 
