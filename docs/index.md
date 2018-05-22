@@ -5,11 +5,13 @@ title: Home
 
 ## Introduction 
 
-In this series of articles, we will walk through a demonstration application that is built with Microservices from the ground up. This section will provide an overview of designing a Microservices application by describing how we created the demo application. Later on, you can try installing the various applications and exploring their features to understand how they work together.
+In this series of articles, we will walk you through a demonstration application that was built with Microservices from the ground up. 
+
+This section will provide an overview of Microservices by describing how we created the demo application. Later on, you can try installing the various services and explore their features to understand how they work together.
 
 ### Azure Kubernetes Services (AKS)
 
-Microsoft Azure Kubernetes Services (AKS) is an orchestration service for hosting Microservices applications. The following is a description of the demo applications hosted in AKS.
+Microsoft Azure Kubernetes Services (AKS) is an orchestration service for hosting Microservices. The following is a description of the demo applications hosted in AKS.
 
 ### Nodes
 
@@ -32,7 +34,7 @@ The main microservices that make up the demo application are:
 * Product Service - This is an ASP.NET Core Web API that manages product data.
 * Order Service - This is an ASP.NET Core Web API that manages order data.
 * Identity Service - This is an ASP.NET MVC application that provides single-sign-on for the frontend website and provides authorization services for the Web APIs.
-* Store Front End - This is an ASP.NET Core MVC application that will serve as our store front end website.
+* Store Frontend - This is an ASP.NET Core MVC application that will serve as our store front end website.
 
 ### High Availability
 
@@ -42,7 +44,7 @@ For high availability, the AKS cluster automatically assigns different instances
 
 ### Data 
 
-The central theme in Microservices is the decoupling of each service. Services should handle a single business activity, and are usually small applications that can be developed by a few persons. Services should not have any strongly coupled dependency on the other services. Each service should be within a bounded domain as per the Domain-Driven-Design Model (DDD).
+The central theme in Microservices is the de-coupling of each service. Services should handle a single business activity, and are usually small applications that can be developed by a few persons. Services should not have any strongly coupled dependency on the other services. Each service should be within a bounded domain as per the Domain-Driven-Design Model (DDD).
 
 Each domain bounded services may have its own database. However, the demo application shares a common database for economic reasons. The tables for each service is independent of the tables for the other services. 
 
@@ -64,7 +66,7 @@ The Ingress Controller is also responsible for the TLS termination of all reques
 
 #### Single Sign On
 
-Identity Service provides Single-Sign-On (SSO) for the frontend website. When the user clicks the 'Login; link in the website, they are signed in using a login web page provided by Identity Service. Apart from the user authentication, Identity Service will provide the frontend website with a set of authentication claims that are assigned to the user. These authentication claims can be used to gain access to various operations on the website, for example, access to a membership or admin page.
+Identity Service provides Single-Sign-On (SSO) for the frontend website. When the user clicks the 'Login' link in the frontend website, they are signed in using a login web page provided by Identity Service. Apart from the user authentication, Identity Service will provide the frontend website with a set of authentication claims that are assigned to the user. These authentication claims can be used to gain access to various operations on the website, for example, access to a membership or admin page.
 
 ![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/sso.PNG "Image")
 

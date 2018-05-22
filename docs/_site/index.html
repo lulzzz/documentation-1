@@ -253,11 +253,13 @@
 <div class="content">
   <h2 id="introduction">Introduction</h2>
 
-<p>In this series of articles, we will walk through a demonstration application that is built with Microservices from the ground up. This section will provide an overview of designing a Microservices application by describing how we created the demo application. Later on, you can try installing the various applications and exploring their features to understand how they work together.</p>
+<p>In this series of articles, we will walk you through a demonstration application that was built with Microservices from the ground up.</p>
+
+<p>This section will provide an overview of Microservices by describing how we created the demo application. Later on, you can try installing the various services and explore their features to understand how they work together.</p>
 
 <h3 id="azure-kubernetes-services-aks">Azure Kubernetes Services (AKS)</h3>
 
-<p>Microsoft Azure Kubernetes Services (AKS) is an orchestration service for hosting Microservices applications. The following is a description of the demo applications hosted in AKS.</p>
+<p>Microsoft Azure Kubernetes Services (AKS) is an orchestration service for hosting Microservices. The following is a description of the demo applications hosted in AKS.</p>
 
 <h3 id="nodes">Nodes</h3>
 
@@ -281,7 +283,7 @@
   <li>Product Service - This is an ASP.NET Core Web API that manages product data.</li>
   <li>Order Service - This is an ASP.NET Core Web API that manages order data.</li>
   <li>Identity Service - This is an ASP.NET MVC application that provides single-sign-on for the frontend website and provides authorization services for the Web APIs.</li>
-  <li>Store Front End - This is an ASP.NET Core MVC application that will serve as our store front end website.</li>
+  <li>Store Frontend - This is an ASP.NET Core MVC application that will serve as our store front end website.</li>
 </ul>
 
 <h3 id="high-availability">High Availability</h3>
@@ -292,7 +294,7 @@
 
 <h3 id="data">Data</h3>
 
-<p>The central theme in Microservices is the decoupling of each service. Services should handle a single business activity, and are usually small applications that can be developed by a few persons. Services should not have any strongly coupled dependency on the other services. Each service should be within a bounded domain as per the Domain-Driven-Design Model (DDD).</p>
+<p>The central theme in Microservices is the de-coupling of each service. Services should handle a single business activity, and are usually small applications that can be developed by a few persons. Services should not have any strongly coupled dependency on the other services. Each service should be within a bounded domain as per the Domain-Driven-Design Model (DDD).</p>
 
 <p>Each domain bounded services may have its own database. However, the demo application shares a common database for economic reasons. The tables for each service is independent of the tables for the other services.</p>
 
@@ -314,7 +316,7 @@
 
 <h4 id="single-sign-on">Single Sign On</h4>
 
-<p>Identity Service provides Single-Sign-On (SSO) for the frontend website. When the user clicks the ‘Login; link in the website, they are signed in using a login web page provided by Identity Service. Apart from the user authentication, Identity Service will provide the frontend website with a set of authentication claims that are assigned to the user. These authentication claims can be used to gain access to various operations on the website, for example, access to a membership or admin page.</p>
+<p>Identity Service provides Single-Sign-On (SSO) for the frontend website. When the user clicks the ‘Login’ link in the frontend website, they are signed in using a login web page provided by Identity Service. Apart from the user authentication, Identity Service will provide the frontend website with a set of authentication claims that are assigned to the user. These authentication claims can be used to gain access to various operations on the website, for example, access to a membership or admin page.</p>
 
 <p><img src="https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/sso.PNG" alt="placeholder" title="Image" /></p>
 
