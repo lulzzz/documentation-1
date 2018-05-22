@@ -82,7 +82,19 @@ Identity Service also provides security access to the Web APIs. The steps for se
 
 ### Communication Between API Services
 
-API's can communicate with each other using http or messaging. The demo application uses Azure Sevice Bus messaging services for communication.
+APIs can communicate with each other using REST or asynchronous messaging. The demo application uses Azure Service Bus messaging services for communication. The following example will illustrate the concept of messaging. 
 
-![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/api-auth.PNG "Image")
+The Product Service tracks the inventory of items with an 'inStock' field in the database. Each time an order is created by the Order Service, the Product Service will reduce the 'inStock' value of the product by one. So if there are 1000 pencils in stock, and an order is created for a pencil, the 'inStock' value for pencils is reduced to 999.
+
+The Order Service can send a request directly to the Product Service via REST to update the 'inStock' value of the product in the database. However, this will create a dependency between the Order Service and the Product Service. A better approach would be to use a broker messaging service to accomplish this communication.
+
+We can use 'Topics' in Azure Service Bus to create a Publish/Subscribe messaging service. The Order Service will publish a message to a Topic called 'Created-Order' each time an order is created. The message will be a simple JSON string containing the product id and other fields related to the order. Now, any service can subscribe to this Topic. The Product Service will subscribe to the Topic, and each time an order is created, the JSON string message will be transmitted to the Product Service asynchronously. The Product Service will then use the product id field in the JSON to find the product that was ordered and then reduce the 'inStock' value of the product by one.
+
+You will observe that the Order Service does not know anything about the Product Service as it is only aware of Service Bus. Similarly, the Product Service is only aware of the Service Bus and not the Order Service. In this way, both services are completely de-coupled.
+
+This approach also makes our application extensible. Say we now have a Shipping Service. The shipping service can subscribe to the 'Created-Order' Topic, and each time a new order is created it can send out an instruction to have the order shipped to a customer address.
+
+Messaging also adds reliability to the application. For instance, if the Product Service is down, the message will remain in the Topic queue until the Product Service is back up again to consume it.
+
+![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/messaging.PNG "Image")
 
