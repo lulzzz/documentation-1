@@ -21,6 +21,8 @@ A pod is a group of one or more docker containers , with shared storage/network,
 
 ### Cluster
 
-The group of nodes , as a whole, is called a cluster.
+The group of nodes , as a whole, is called a cluster. This is created in an AKS cluster.
+
+![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/cluster.PNG "Image")
 
 
