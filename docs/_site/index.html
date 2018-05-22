@@ -302,11 +302,19 @@
 
 <h3 id="data">Data</h3>
 
-<p>The central theme in Microservices is the decoupling of each service. Services should handle a single business activity and are usually small applications that can be developed by a few persons. Services should not have any strongly coupled dependency on the other applications. Each service should be within a bounded domain as per the Domain-Driven-Design Model (DDD).</p>
+<p>The central theme in Microservices is the decoupling of each service. Services should handle a single business activity, and are usually small applications that can be developed by a few persons. Services should not have any strongly coupled dependency on the other services. Each service should be within a bounded domain as per the Domain-Driven-Design Model (DDD).</p>
 
-<p>Each domain bounded services may have its own database. However, the demo application shares a common database for economic reasons. However, the tables for each service is totally independent of the tables for the other services. Each service will be independent and decoupled, but will ‘share space’ in the database.</p>
+<p>Each domain bounded services may have its own database. However, the demo application shares a common database for economic reasons. The tables for each service is independent of the tables for the other services.</p>
 
 <p><img src="https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/cluster-3.PNG" alt="placeholder" title="Image" /></p>
+
+<h3 id="load-balancer">Load Balancer</h3>
+
+<p>Requests to the demo application is routed through a Load Balancer. An ingress controller is responsible for roting requests to the services. There is one external IP address and DNS name. For instance the public IP for the demo cluster may be : 23.100.26.95 and the DNS may be : rclappdev.eastus.cloudapp.azure.com. In the demo, requests are routed based on paths. For instance a request with a path ‘/store’ (https://rclappdev.eastus.cloudapp.azure.com/store) will be routed to the store web front end.</p>
+
+<p>The communication between the web frontend and the APIs is also done through the ingress controller. For instance a request from the fronted to the product service using the path ‘/productsvc’ (https://rclappdev.eastus.cloudapp.azure.com/productsvc) will be routed to the Product Service Web API.</p>
+
+<p><img src="https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/cluster-4.PNG" alt="placeholder" title="Image" /></p>
 
 </div>
     </main>
