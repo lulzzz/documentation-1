@@ -9,7 +9,7 @@ In this series of articles, we will walk through a demonstration application tha
 
 ### Azure Kubernetes Services (AKS)
 
-Microsoft Azure Kubernetes Services (AKS) is an orchestration service for the hosting Microservices applications. The following is a description of the demonstration applications hosted in AKS.
+Microsoft Azure Kubernetes Services (AKS) is an orchestration service for hosting Microservices applications. The following is a description of the demo applications hosted in AKS.
 
 ### Nodes
 
@@ -17,7 +17,7 @@ A node is a Virtual Machine (VM) in the cluster. Each node has the services nece
 
 ### Pods
 
-A pod is a group of one or more docker containers, with shared storage/network, and a specification for how to run the containers. Pods are run in nodes.
+A pod is a docker container, with shared storage/network, and a specification for how to run the containers. Pods are run in nodes.
 
 ### Cluster
 
@@ -27,17 +27,23 @@ The group of nodes , as a whole, is called a cluster. The following diagram illu
 
 ### Services
 
-The main microservices that make up the application are:
+The main microservices that make up the demo application are:
 
 * Product Service - This is an ASP.NET Core Web API that manages product data.
 * Order Service - This is an ASP.NET Core Web API that manages order data.
-* Identity Service = This is an ASP.NET MVC application that provides single-sign-on for the frontend website and provides authorization services for the Web APIs.
-* Store Front End = This is an ASP.NET Core MVC application that will serve as our store front end website.
+* Identity Service - This is an ASP.NET MVC application that provides single-sign-on for the frontend website and provides authorization services for the Web APIs.
+* Store Front End - This is an ASP.NET Core MVC application that will serve as our store front end website.
 
 ### High Availability
 
-Gor high availability the AKS cluster automatically assigns services to pods and nodes. Later on we can see how requests are routed to services within the pods to load balance the requests.
+For high availability, the AKS cluster automatically assigns different instances of services to pods and nodes. Later on, we will see how requests are routed to services within the pods to load balance the requests.
 
 ![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/cluster-2.PNG "Image")
 
+### Data 
 
+The central theme in Microservices is the decoupling of each service. Services should handle a single business activity and are usually small applications that can be developed by a few persons. Services should not have any strongly coupled dependency on the other applications. Each service should be within a bounded domain as per the Domain-Driven-Design Model (DDD).
+
+Each domain bounded services may have its own database. However, the demo application shares a common database for economic reasons. However, the tables for each service is totally independent of the tables for the other services. Each service will be independent and decoupled, but will 'share space' in the database.
+
+![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/cluster-3.PNG "Image")
