@@ -31,7 +31,13 @@ The main microservices that make up the application are:
 
 * Product Service - This is an ASP.NET Core Web API that manages product data.
 * Order Service - This is an ASP.NET Core Web API that manages order data.
-* Identity Service = This is an ASP.NET MVC application that provides single-sign-on and provides authorization services for the Web APIs.
-* Store Front End = This is an ASP.NET Core MVC application that will serve as our store front end application.
+* Identity Service = This is an ASP.NET MVC application that provides single-sign-on for the frontend website and provides authorization services for the Web APIs.
+* Store Front End = This is an ASP.NET Core MVC application that will serve as our store front end website.
+
+### High Availability
+
+Gor high availability the AKS cluster automatically assigns services to pods and nodes. Later on we can see how requests are routed to services within the pods to load balance the requests.
+
+![placeholder](https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/cluster-2.PNG "Image")
 
 
