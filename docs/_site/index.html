@@ -308,13 +308,28 @@
 
 <p><img src="https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/cluster-3.PNG" alt="placeholder" title="Image" /></p>
 
-<h3 id="load-balancer">Load Balancer</h3>
+<h3 id="load-balancer-and-ingress-controller">Load Balancer and Ingress Controller</h3>
 
-<p>Requests to the demo application is routed through a Load Balancer. An ingress controller is responsible for roting requests to the services. There is one external IP address and DNS name. For instance the public IP for the demo cluster may be : 23.100.26.95 and the DNS may be : rclappdev.eastus.cloudapp.azure.com. In the demo, requests are routed based on paths. For instance a request with a path ‘/store’ (https://rclappdev.eastus.cloudapp.azure.com/store) will be routed to the store web front end.</p>
+<p>Requests to the demo application is routed through a Load Balancer. An ingress controller is responsible for routing requests to the services. There is one external public IP address and DNS name for the application. For instance, the public IP for the cluster may be : ‘23.100.26.95’ and the DNS may be : ‘rclappdev.eastus.cloudapp.azure.com’. In the demo, requests are routed based on paths. As an example, a request with a path ‘/store’ (https://rclappdev.eastus.cloudapp.azure.com/store) will be routed to the store frontend website.</p>
 
-<p>The communication between the web frontend and the APIs is also done through the ingress controller. For instance a request from the fronted to the product service using the path ‘/productsvc’ (https://rclappdev.eastus.cloudapp.azure.com/productsvc) will be routed to the Product Service Web API.</p>
+<p>The communication between the web frontend and the APIs is also done through the ingress controller. For instance, a request from the fronted website to the Product Service using the path ‘/productsvc’ (https://rclappdev.eastus.cloudapp.azure.com/productsvc) will be routed to the Product Service Web API.</p>
 
 <p><img src="https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/cluster-4.PNG" alt="placeholder" title="Image" /></p>
+
+<h3 id="https-termination">HTTPS Termination</h3>
+
+<p>The Ingress Controller is also responsible for the TLS termination of all requests. HTTPS certificates are provided for the frontend website and each service by the cert-manager service that generates HTTPS certificates via the ‘Let’s Encrypt’ project.</p>
+
+<h3 id="authentication-and-authorization-services">Authentication and Authorization Services</h3>
+
+<h4 id="single-sign-on">Single Sign On</h4>
+
+<p><img src="https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/sso.PNG" alt="placeholder" title="Image" /></p>
+
+<h4 id="authorized-api-access">Authorized API Access</h4>
+
+<p><img src="https://raw.githubusercontent.com/rcl-microservices-aks/documentation/master/images/intro/api-auth.PNG" alt="placeholder" title="Image" /></p>
+
 
 </div>
     </main>
