@@ -3,9 +3,9 @@ markdown:         kramdown
 highlighter:      rouge
 
 # Setup
-title:            Microservices with AKS
+title:            Microservices
 tagline:          'V1'
-description:      'Create microservices with Azure Kubernetes Service'
+description:      'Microservices with Azure, ASP.NET and Xamarin'
 url:              https://microservices.rclapp.com
 baseurl:          # the optional subpath of your site, e.g. "/blog"
                   # NB: This applies to all pages in your Jekyll site.
